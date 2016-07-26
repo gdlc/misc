@@ -3,6 +3,7 @@
 
 **Loading the data**
 ```R
+ library(BGData)
  load('~/PIC/example_sire_wg.RData')
  PC=svd(X,nu=3,nv=0)$u
  DATA=BGData(geno=X, pheno=data.frame(y=blup,pc1=PC[,1],pc2=PC[,2]),map=data.frame())
