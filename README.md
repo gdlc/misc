@@ -1,14 +1,14 @@
 ## (1) GWAS with BGData
 
 
-** (1.1) Loading the data**
+**(1.1) Loading the data**
 ```R
  rm(list=ls())
  library(BGData)
  load('~/PIC/example_sire_wg.RData')
 ```
 
-** (1.2) Creating a BGData object***
+**(1.2) Creating a BGData object***
 ```R
  DATA=BGData(geno=X, pheno=data.frame(y=blup,pc1=PC[,1],pc2=PC[,2]),map=data.frame())
 ```
@@ -21,38 +21,38 @@
 
 ## (2) BGLR
 
-** (2.1) Gaussian Prior (`BRR`)
+**(2.1) Gaussian Prior (`BRR`)
  
  ```R
   fm=BGLR(y=blup,ETA=list(list(X=X,model='BRR')),nIter=55000,burnIn=5000)
  ```
  
- ** (2.1) Gaussian Prior (`BRR`)
+ **(2.1) Gaussian Prior (`BRR`)
  
  ```R
   fm=BGLR(y=blup,ETA=list(list(X=X,model='BRR')),nIter=55000,burnIn=5000)
  ```
  
- ** (2.2) BayesA (`BayesA`)
+ **(2.2) BayesA (`BayesA`)
  
  ```R
   fm=BGLR(y=blup,ETA=list(list(X=X,model='BRR')),nIter=55000,burnIn=5000)
  ```
  
 
- ** (2.3) BayesB (`BayesB`)
+ **(2.3) BayesB (`BayesB`)
  
  ```R
   fm=BGLR(y=blup,ETA=list(list(X=X,model='BRR')),nIter=55000,burnIn=5000)
  ```
  
- ** (2.4) BayesC (`BayesC`)
+ **(2.4) BayesC (`BayesC`)
  
  ```R
   fm=BGLR(y=blup,ETA=list(list(X=X,model='BRR')),nIter=55000,burnIn=5000)
  ```
  
- ** (2.5) Bayesian-LASSO (`BL`)
+ **(2.5) Bayesian-LASSO (`BL`)
  
  ```R
   fm=BGLR(y=blup,ETA=list(list(X=X,model='BRR')),nIter=55000,burnIn=5000)
