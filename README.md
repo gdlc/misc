@@ -1,4 +1,4 @@
-## 1 ## GWAS with BGData
+## (1) GWAS with BGData
 
 
 **Loading the data**
