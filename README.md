@@ -83,11 +83,15 @@ for(i in 1:5){
  yNA=blup
  tst=which(folds==i)
  yNA[tst]=NA
- fm=BGLR(y=yNA,ETA=list(list(X=X,model='BRR')),nIter=3500,burnIn=500,verbose=F)
+ fm=BGLR(y=yNA,ETA=list(list(X=X,model='BRR')),nIter=12000,burnIn=2000,verbose=F)
   yHatCV_BRR[tst]=fm$yHat[tst]
- fm=BGLR(y=yNA,ETA=list(list(X=X,model='BayesB')),nIter=3500,burnIn=500,verbose=F)
+ fm=BGLR(y=yNA,ETA=list(list(X=X,model='BayesB')),nIter=12000,burnIn=2000,verbose=F)
   yHatCV_BB[tst]=fm$yHat[tst]
   print(i)
 }
 
+pdf('5-fold CV.pdf')
+ plot(y=blup,x=yHatCV_BB,cex=.5,col=4,ylab='BLUP',xlab='yHatCV_BB',main='BayesB')
+ plot(y=blup,x=yHatCV_BRR,cex=.5,col=4,ylab='BLUP',xlab='yHatCV_BRR',main='BRR')
+dev.off()
 ```
