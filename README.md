@@ -1,11 +1,6 @@
 ## (1) GWAS with BGData
 
-### Computation of PC
 
-```R
- PC=svd(X)
- ```
- 
 **(1.1) Loading the data**
 ```R
  rm(list=ls())
