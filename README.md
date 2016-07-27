@@ -78,7 +78,7 @@ folds=folds[order(runif(N))]
 
 yHatCV_BRR=rep(NA,N)
 yHatCV_BB=rep(NA,N)
-
+yHatCV_BRRSets=rep(NA,N)
 for(i in 1:5){
  yNA=blup
  tst=which(folds==i)
@@ -87,9 +87,21 @@ for(i in 1:5){
   yHatCV_BRR[tst]=fm$yHat[tst]
  fm=BGLR(y=yNA,ETA=list(list(X=X,model='BayesB')),nIter=6000,burnIn=1000,verbose=F)
   yHatCV_BB[tst]=fm$yHat[tst]
+  
+ DATA@pheno$y=yNA
+ B<-GWAS(y~pc1+pc2,data=DATA,method='lm',mc.cores=10,verbose=T) # 6.9 seq with 10 cores
+ pValue=B[,4]
+ thresholds=quantile(pValue,c(.005,.01,.05,.1,.33,.5))
+  sets=ifelse(pValue<=thresholds[1],1,
+        ifelse(pValue<=thresholds[2],2,
+         ifelse(pValue<=thresholds[3],3,
+          ifelse(pValue<=thresholds[4],4,5)))) 
+ fm=BGLR(y=yNA,ETA=list(list(X=X,model='BRR_sets',sets=sets)),nIter=6000,burnIn=1000,verbose=F)
+ yHatCV_BRRSets[tst]=fm$yHat[tst]
   print(i)
+  save(blup,yHatCV_BB,yHataCV_BRR,yHatCV_BRRSets,file='CV.RData')
 }
-save(blup,yHatCV_BB,yHataCV_BRR,file='CV.RData')
+
 
 pdf('5-fold CV.pdf')
  plot(y=blup,x=yHatCV_BB,cex=.5,col=4,ylab='BLUP',xlab='yHatCV_BB',main='BayesB')
