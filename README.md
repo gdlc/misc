@@ -79,7 +79,7 @@ folds=folds[order(runif(N))]
 yHatCV_BRR=rep(NA,N)
 yHatCV_BB=rep(NA,N)
 yHatCV_BRRSets=rep(NA,N)
-for(i in 1:5){
+for(i in 2:5){
  yNA=blup
  tst=which(folds==i)
  yNA[tst]=NA
@@ -99,7 +99,7 @@ for(i in 1:5){
  fm=BGLR(y=yNA,ETA=list(list(X=X,model='BRR_sets',sets=sets)),nIter=6000,burnIn=1000,verbose=F)
  yHatCV_BRRSets[tst]=fm$yHat[tst]
   print(i)
-  save(blup,yHatCV_BB,yHataCV_BRR,yHatCV_BRRSets,file='CV.RData')
+  save(blup,yHatCV_BB,yHatCV_BRR,yHatCV_BRRSets,file='CV.RData')
 }
 
 
