@@ -16,7 +16,7 @@
 **(1.3) Running GWAS using BGData**
 ```R
  B<-GWAS(y~pc1+pc2,data=DATA,method='lm',mc.cores=10,verbose=T) # 6.9 seq with 10 cores
- plot(-log10(B[,4]),type='o',col=4,cex=.5)
+ plot(-log10(B[,4]),type='o',col=4,cex=.5,main='GWAS WG Sire model')
 ```
 
 ## (2) BGLR
@@ -83,15 +83,17 @@ for(i in 1:5){
  yNA=blup
  tst=which(folds==i)
  yNA[tst]=NA
- fm=BGLR(y=yNA,ETA=list(list(X=X,model='BRR')),nIter=12000,burnIn=2000,verbose=F)
+ fm=BGLR(y=yNA,ETA=list(list(X=X,model='BRR')),nIter=6000,burnIn=1000,verbose=F)
   yHatCV_BRR[tst]=fm$yHat[tst]
- fm=BGLR(y=yNA,ETA=list(list(X=X,model='BayesB')),nIter=12000,burnIn=2000,verbose=F)
+ fm=BGLR(y=yNA,ETA=list(list(X=X,model='BayesB')),nIter=6000,burnIn=1000,verbose=F)
   yHatCV_BB[tst]=fm$yHat[tst]
   print(i)
 }
+save(blup,yHatCV_BB,yHataCV_BRR,file='CV.RData')
 
 pdf('5-fold CV.pdf')
  plot(y=blup,x=yHatCV_BB,cex=.5,col=4,ylab='BLUP',xlab='yHatCV_BB',main='BayesB')
  plot(y=blup,x=yHatCV_BRR,cex=.5,col=4,ylab='BLUP',xlab='yHatCV_BRR',main='BRR')
 dev.off()
+
 ```
