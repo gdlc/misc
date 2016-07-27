@@ -25,19 +25,19 @@
  ```R
   nIter=55000
   burnIn=5000
-  X=X/sqrt(ncol(X))
+  X=scale(X)/sqrt(ncol(X))
   fmBRR=BGLR(y=blup,ETA=list(list(X=X,model='BRR')),nIter=nIter,burnIn=burnIn,saveAt='BRR_') # ~.05 sec/iteration
   save(fmBRR,file='fmBRR.RData')
  ```
  
- **(2.1) Scaled-t prior (`BayesA`)**
+ **(2.2) Scaled-t prior (`BayesA`)**
  
  ```R
   fmBA=BGLR(y=blup,ETA=list(list(X=X,model='BayesA')),nIter=nIter,burnIn=burnIn,saveAt='BA_') 
   save(fmBA,file='fmBA.RData')
  ```
  
- **(2.2) Spike-Slab-1 (`BayesB`)**
+ **(2.3) Spike-Slab-1 (`BayesB`)**
  
  ```R
   fmBB=BGLR(y=blup,ETA=list(list(X=X,model='BayesB')),nIter=nIter,burnIn=burnIn,saveAt='BB_') 
@@ -45,24 +45,30 @@
  ```
  
 
- **(2.3) BayesB (`BayesB`)**
+ **(2.4) Spike-Slab-2 (`BayesC`)**
  
  ```R
-  fm=BGLR(y=blup,ETA=list(list(X=X,model='BRR')),nIter=55000,burnIn=5000)
- ```
- 
- **(2.4) BayesC (`BayesC`)**
- 
- ```R
-  fm=BGLR(y=blup,ETA=list(list(X=X,model='BRR')),nIter=55000,burnIn=5000)
+  fmBC=BGLR(y=blup,ETA=list(list(X=X,model='BayesC')),nIter=55000,burnIn=5000)
+  save(fmBC,file='fmBC.RData')
  ```
  
  **(2.5) Bayesian-LASSO (`BL`)**
  
  ```R
-  fm=BGLR(y=blup,ETA=list(list(X=X,model='BRR')),nIter=55000,burnIn=5000)
+  fmBL=BGLR(y=blup,ETA=list(list(X=X,model='BL')),nIter=55000,burnIn=5000)
+   save(fmBL,file='fmBL.RData')
  ```
- 
+  ```R
+  pValue=B[,4]
+  thresholds=quantile(pValue,c(.005,.01,.05,.1,.33,.5))
+  sets=ifelse(pValue<=thresholds[1],1,
+        ifelse(pValue<=thresholds[2],2,
+         ifelse(pValue<=thresholds[3],3,
+          ifelse(pValue<=thresholds[4],4,5))))
+  fmBRRSets=BGLR(y=blup,ETA=list(list(X=X,model='BRR_sets',sets=sets)),nIter=55000,burnIn=5000)
+  save(fmBRRSets,file='fmBRRSets.RData')
+  
+ ```
 ## (3) 5-fold Cross-validation
 
 ```R
